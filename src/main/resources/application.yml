@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: currency-converter
+
+#exchange api main address
+exchange-rate-service-url: "https://api.exchangerate.host"
+
+#cache-life-time in minutes
+cache-life-time: 60
+
+#metrics config
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+      distribution:
+        percentiles-histogram:
+          "[http.server.requests]": true
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
