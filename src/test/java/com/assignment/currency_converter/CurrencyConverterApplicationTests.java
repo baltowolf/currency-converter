@@ -1,7 +1,7 @@
 package com.assignment.currency_converter;
 
 import com.assignment.currency_converter.controller.ConversionController;
-import com.assignment.currency_converter.service.CalculationService;
+import com.assignment.currency_converter.service.calculation.CalculationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -46,12 +46,15 @@ class CurrencyConverterApplicationTests {
      */
     @Test
     public void calculateValueWithCSRF() throws Exception {
-        mockMvc.perform(post("/calculate-value").contentType(MediaType.APPLICATION_JSON)
-                        .param("sourceCurrency", "USD")
-                        .param("targetCurrency", "RUB")
-                        .param("monetaryValue", "100")
-                        .with(user("admin").password("pass"))
-                        .with(csrf()))
+        mockMvc
+                .perform(
+                        post("/calculate-value")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("sourceCurrency", "USD")
+                                .param("targetCurrency", "RUB")
+                                .param("monetaryValue", "100")
+                                .with(user("admin").password("pass"))
+                                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("resultValue", notNullValue()));
     }
@@ -61,11 +64,14 @@ class CurrencyConverterApplicationTests {
      */
     @Test
     public void calculateValueWithoutCSRF() throws Exception {
-        mockMvc.perform(post("/calculate-value").contentType(MediaType.APPLICATION_JSON)
-                        .param("sourceCurrency", "USD")
-                        .param("targetCurrency", "RUB")
-                        .param("monetaryValue", "100")
-                        .with(user("admin").password("pass")))
+        mockMvc
+                .perform(
+                        post("/calculate-value")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("sourceCurrency", "USD")
+                                .param("targetCurrency", "RUB")
+                                .param("monetaryValue", "100")
+                                .with(user("admin").password("pass")))
                 .andExpect(status().isForbidden());
     }
 
@@ -73,14 +79,15 @@ class CurrencyConverterApplicationTests {
      * Test calculation correctness
      */
     @Test
-    public void calculationCorrectness()
-    {
+    public void calculationCorrectness() {
         Map<String, Number> rates = new HashMap<>();
         rates.put("USD", 1.088354);
         rates.put("RUB", 74.73534);
-        String result = calculationService.getFormattedResultValue(rates, "USD", "RUB", 100.0)
-                .replaceAll("\u00a0", "").replaceAll("\\s+", "");
-        assertThat(result)
-                .isEqualTo("6866,82₽");
+        String result =
+                calculationService
+                        .getFormattedResultValue(rates, "USD", "RUB", 100.0)
+                        .replaceAll("\u00a0", "")
+                        .replaceAll("\\s+", "");
+        assertThat(result).isEqualTo("6866,82₽");
     }
 }

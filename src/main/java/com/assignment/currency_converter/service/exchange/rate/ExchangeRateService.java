@@ -1,4 +1,4 @@
-package com.assignment.currency_converter.service;
+package com.assignment.currency_converter.service.exchange.rate;
 
 import java.util.Map;
 
@@ -8,6 +8,7 @@ import java.util.Map;
 public interface ExchangeRateService {
     /**
      * Get Exchange Rates
+     *
      * @return Currency code -> Exchange Rate value
      */
     Map<String, Number> getExchangeRates();

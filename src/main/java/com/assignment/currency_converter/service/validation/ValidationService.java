@@ -1,4 +1,4 @@
-package com.assignment.currency_converter.service;
+package com.assignment.currency_converter.service.validation;
 
 /**
  * Service for validate input data

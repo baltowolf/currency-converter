@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Currency Converter</title>
@@ -7,22 +7,22 @@
 <body>
 <form method="post" th:action="@{/calculate-value}">
     <label> Source currency:
-        <select th:name="sourceCurrency" required>
-            <option th:each="sc : ${currencies}" th:value="${sc}" th:text="${sc}"></option>
+        <select required th:name="sourceCurrency">
+            <option th:each="sc : ${currencies}" th:text="${sc}" th:value="${sc}"></option>
         </select>
     </label>
     <label> Target currency:
-        <select th:name="targetCurrency" required>
-            <option th:each="tc : ${currencies}" th:value="${tc}" th:text="${tc}"></option>
+        <select required th:name="targetCurrency">
+            <option th:each="tc : ${currencies}" th:text="${tc}" th:value="${tc}"></option>
         </select>
     </label>
     <label> Monetary Value:
-        <input type="text" th:name="monetaryValue" placeholder="Enter positive number..."
-               required pattern="^(?!0*[.,]0*$|[.,]0*$|0*$)\d+[,.]?\d{0,2}$">
+        <input pattern="^(?!0*[.,]0*$|[.,]0*$|0*$)\d+[,.]?\d{0,2}$" placeholder="Enter positive number..." required
+               th:name="monetaryValue" type="text">
     </label>
     <input type="submit"/>
 </form>
-<p>Result Value: <span th:text="${resultValue}" /></p>
-<p>Calculation Time: <span th:text="${calculationTime}" /> milliseconds</p>
+<p>Result Value: <span th:text="${resultValue}"/></p>
+<p>Calculation Time: <span th:text="${calculationTime}"/> milliseconds</p>
 </body>
 </html>

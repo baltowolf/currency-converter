@@ -18,14 +18,16 @@ public class AppErrorController implements ErrorController {
 
     /**
      * Handle error
+     *
      * @return - Error thymeleaf template
      */
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request) {
-        log.error(String.format("Unexpected error with code: %s and message: %s",
-                request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE),
-                request.getAttribute(RequestDispatcher.ERROR_MESSAGE)
-        ));
+        log.error(
+                String.format(
+                        "Unexpected error with code: %s and message: %s",
+                        request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE),
+                        request.getAttribute(RequestDispatcher.ERROR_MESSAGE)));
         log.info("Redirect to error page");
         return "error";
     }

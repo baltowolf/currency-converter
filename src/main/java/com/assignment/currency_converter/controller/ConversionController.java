@@ -1,8 +1,9 @@
 package com.assignment.currency_converter.controller;
 
-import com.assignment.currency_converter.service.CalculationService;
-import com.assignment.currency_converter.service.ExchangeRateService;
-import com.assignment.currency_converter.service.ValidationService;
+import com.assignment.currency_converter.service.calculation.CalculationService;
+import com.assignment.currency_converter.service.exchange.rate.ExchangeRateService;
+import com.assignment.currency_converter.service.log.request.history.ConversionHistoryService;
+import com.assignment.currency_converter.service.validation.ValidationService;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,11 @@ public class ConversionController {
     private final ExchangeRateService exchangeRateService;
     private final CalculationService calculationService;
     private final ValidationService validationService;
+    private final ConversionHistoryService conversionHistoryService;
 
     /**
      * Localhost get request
+     *
      * @return - Main thymeleaf template
      */
     @GetMapping(path = "/")
@@ -43,24 +46,29 @@ public class ConversionController {
 
     /**
      * Calculate Result Value
+     *
      * @return - Main thymeleaf template
      */
     @PostMapping("/calculate-value")
-    public String calculateResultValue(Model model,
-                                       @RequestParam @NotNull String sourceCurrency,
-                                       @RequestParam @NotNull String targetCurrency,
-                                       @RequestParam @NotNull @Positive Double monetaryValue) {
+    public String calculateResultValue(
+            Model model,
+            @RequestParam @NotNull String sourceCurrency,
+            @RequestParam @NotNull String targetCurrency,
+            @RequestParam @NotNull @Positive Double monetaryValue) {
         validationService.validate(sourceCurrency, targetCurrency, monetaryValue);
         StopWatch watch = new StopWatch();
         watch.start();
         Map<String, Number> rates = exchangeRateService.getExchangeRates();
-        String resultValue = calculationService.getFormattedResultValue(rates, sourceCurrency, targetCurrency, monetaryValue);
+        String resultValue =
+                calculationService.getFormattedResultValue(
+                        rates, sourceCurrency, targetCurrency, monetaryValue);
         watch.stop();
         long calculationTime = watch.getTotalTimeMillis();
         model.addAttribute("resultValue", resultValue);
         model.addAttribute("calculationTime", calculationTime);
         log.info(String.format("CalculationTime in milliseconds: %d", calculationTime));
         initCurrenciesOptions(model);
+        conversionHistoryService.saveConversionRequest(sourceCurrency, targetCurrency, monetaryValue);
         return MAIN_PAGE;
     }
 
@@ -68,7 +76,10 @@ public class ConversionController {
      * Init Currencies Options for select-fields on the main page
      */
     private void initCurrenciesOptions(Model model) {
-        List<String> currencies = exchangeRateService.getExchangeRates().keySet().stream().sorted().collect(Collectors.toList());
+        List<String> currencies =
+                exchangeRateService.getExchangeRates().keySet().stream()
+                        .sorted()
+                        .collect(Collectors.toList());
         model.addAttribute("currencies", currencies);
     }
 }

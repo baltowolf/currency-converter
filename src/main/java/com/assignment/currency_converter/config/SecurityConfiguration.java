@@ -17,8 +17,7 @@ import org.springframework.security.web.header.writers.XXssProtectionHeaderWrite
 @EnableWebSecurity
 public class SecurityConfiguration {
     /**
-     * Set additional security properties: CSP and XSS
-     * CSRF is active by default
+     * Set additional security properties: CSP and XSS CSRF is active by default
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,11 +34,7 @@ public class SecurityConfiguration {
      */
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
+        UserDetails user = User.builder().username("user").password("password").roles("USER").build();
         return new InMemoryUserDetailsManager(user);
     }
 }

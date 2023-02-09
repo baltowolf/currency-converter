@@ -20,10 +20,10 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CachingConfig {
 
+    public static final String RATES_CACHE = "rates";
+
     @Value("${cache-life-time}")
     private long cacheLifeTime;
-
-    public static final String RATES_CACHE = "rates";
 
     @Bean
     public CacheManager cacheManager() {
@@ -33,7 +33,10 @@ public class CachingConfig {
             protected Cache createConcurrentMapCache(@NonNull String name) {
                 return new ConcurrentMapCache(
                         name,
-                        CacheBuilder.newBuilder().expireAfterWrite(cacheLifeTime, TimeUnit.MINUTES).build().asMap(),
+                        CacheBuilder.newBuilder()
+                                .expireAfterWrite(cacheLifeTime, TimeUnit.MINUTES)
+                                .build()
+                                .asMap(),
                         true);
             }
         };

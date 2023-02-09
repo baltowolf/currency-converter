@@ -1,4 +1,4 @@
-package com.assignment.currency_converter.service;
+package com.assignment.currency_converter.service.exchange.rate;
 
 import com.assignment.currency_converter.config.CachingConfig;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +21,17 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
     /**
      * Get Exchange Rates
-     * @return Currency code -> Exchange Rate value
      *
-     * Result saves in cache
+     * @return Currency code -> Exchange Rate value
+     * <p>Result saves in cache
      */
     @Override
     @Cacheable(CachingConfig.RATES_CACHE)
     public Map<String, Number> getExchangeRates() {
         try {
-            return (Map<String, Number>) Objects.requireNonNull(exchangeRateServiceRestTemplate.getForObject("/latest", Map.class)).get("rates");
+            return (Map<String, Number>)
+                    Objects.requireNonNull(exchangeRateServiceRestTemplate.getForObject("/latest", Map.class))
+                            .get("rates");
         } catch (Exception e) {
             throw new RuntimeException("Can't get rates");
         }
