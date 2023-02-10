@@ -22,8 +22,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     /**
      * Get Exchange Rates
      *
-     * @return Currency code -> Exchange Rate value
-     * <p>Result saves in cache
+     * @return Currency code -> Exchange Rate value. Result saves in cache
      */
     @Override
     @Cacheable(CachingConfig.RATES_CACHE)

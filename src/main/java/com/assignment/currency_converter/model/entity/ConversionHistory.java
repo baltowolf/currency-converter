@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Conversion History Entity
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

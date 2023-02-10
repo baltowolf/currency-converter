@@ -59,5 +59,4 @@
 - To set up Grafana data source you must write "prometheus:9090" in URL to access the Internal Docker network
 - For test Grafana and Prometheus type "logback_events_total" in search field
 - Frontend represents with thymeleaf by one template: [main.html](src/main/resources/templates/main.html) (simple html,
-  no design,
-  only for backend demo)
+  no design, only for backend demo)

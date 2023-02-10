@@ -9,6 +9,12 @@ public interface CalculationService {
 
     /**
      * Get formatted string with calculation result and currency symbol
+     *
+     * @param exchangeRates  exchange rates map: Currency code -> Exchange Rate value
+     * @param sourceCurrency source currency code
+     * @param targetCurrency target currency code
+     * @param monetaryValue  monetary value
+     * @return formatted result value
      */
     String getFormattedResultValue(
             Map<String, Number> exchangeRates,

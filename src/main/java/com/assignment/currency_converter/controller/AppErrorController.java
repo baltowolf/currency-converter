@@ -19,6 +19,7 @@ public class AppErrorController implements ErrorController {
     /**
      * Handle error
      *
+     * @param request http request
      * @return - Error thymeleaf template
      */
     @RequestMapping("/error")

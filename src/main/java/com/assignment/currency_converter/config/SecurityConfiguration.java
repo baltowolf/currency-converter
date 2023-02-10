@@ -16,8 +16,13 @@ import org.springframework.security.web.header.writers.XXssProtectionHeaderWrite
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
     /**
      * Set additional security properties: CSP and XSS CSRF is active by default
+     *
+     * @param http HttpSecurity object
+     * @return SecurityFilterChain bean
+     * @throws Exception
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -31,6 +36,8 @@ public class SecurityConfiguration {
 
     /**
      * Create default in-memory user for login
+     *
+     * @return InMemoryUserDetailsManager bean
      */
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {

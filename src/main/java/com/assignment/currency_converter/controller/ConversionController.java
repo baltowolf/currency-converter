@@ -36,6 +36,7 @@ public class ConversionController {
     /**
      * Localhost get request
      *
+     * @param model model
      * @return - Main thymeleaf template
      */
     @GetMapping(path = "/")
@@ -47,6 +48,10 @@ public class ConversionController {
     /**
      * Calculate Result Value
      *
+     * @param model          model
+     * @param sourceCurrency source currency code
+     * @param targetCurrency target currency code
+     * @param monetaryValue  monetary value
      * @return - Main thymeleaf template
      */
     @PostMapping("/calculate-value")
@@ -55,7 +60,9 @@ public class ConversionController {
             @RequestParam @NotNull String sourceCurrency,
             @RequestParam @NotNull String targetCurrency,
             @RequestParam @NotNull @Positive Double monetaryValue) {
+
         validationService.validate(sourceCurrency, targetCurrency, monetaryValue);
+
         StopWatch watch = new StopWatch();
         watch.start();
         Map<String, Number> rates = exchangeRateService.getExchangeRates();
@@ -64,16 +71,20 @@ public class ConversionController {
                         rates, sourceCurrency, targetCurrency, monetaryValue);
         watch.stop();
         long calculationTime = watch.getTotalTimeMillis();
+
         model.addAttribute("resultValue", resultValue);
         model.addAttribute("calculationTime", calculationTime);
         log.info(String.format("CalculationTime in milliseconds: %d", calculationTime));
         initCurrenciesOptions(model);
+
         conversionHistoryService.saveConversionRequest(sourceCurrency, targetCurrency, monetaryValue);
         return MAIN_PAGE;
     }
 
     /**
      * Init Currencies Options for select-fields on the main page
+     *
+     * @param model model
      */
     private void initCurrenciesOptions(Model model) {
         List<String> currencies =

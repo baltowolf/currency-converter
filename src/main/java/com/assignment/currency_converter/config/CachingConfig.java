@@ -25,6 +25,11 @@ public class CachingConfig {
     @Value("${cache-life-time}")
     private long cacheLifeTime;
 
+    /**
+     * Create Concurrent Cache Map
+     *
+     * @return CacheManager bean
+     */
     @Bean
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager() {
