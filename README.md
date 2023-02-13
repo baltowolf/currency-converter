@@ -62,7 +62,7 @@
 -
     - Retrieving exchange rates: [exchange.rate](src/main/java/com/assignment/currency_converter/service/exchange/rate)
 -
-    - Calculation:[calculation](src/main/java/com/assignment/currency_converter/service/calculation)
+    - Calculation: [calculation](src/main/java/com/assignment/currency_converter/service/calculation)
 -
     - Storing and restoring data using a h2-in-memory
       database: [history](src/main/java/com/assignment/currency_converter/service/log/request/history)
