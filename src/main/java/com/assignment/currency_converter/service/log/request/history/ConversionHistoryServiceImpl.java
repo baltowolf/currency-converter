@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -25,7 +26,13 @@ public class ConversionHistoryServiceImpl implements ConversionHistoryService {
                 .monetaryValue(monetaryValue)
                 .eventDateTime(LocalDateTime.now())
                 .build();
-        ConversionHistory savedEntity = conversionHistoryRepository.save(conversionHistory);
-        log.info("Conversion Request Entity saved into database: " + savedEntity);
+        ConversionHistory storedEntity = conversionHistoryRepository.save(conversionHistory);
+        log.info("Conversion Request Entity saved into database: " + storedEntity);
+    }
+
+    @Override
+    @Transactional
+    public List<ConversionHistory> findAll() {
+        return conversionHistoryRepository.findAll();
     }
 }

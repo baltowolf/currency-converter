@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Currency Converter</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
 </head>
 <body>
 <form method="post" th:action="@{/calculate-value}">
-    <label> Source currency:
+    <label>Source currency:
         <select required th:name="sourceCurrency">
             <option th:each="sc : ${currencies}" th:text="${sc}" th:value="${sc}"></option>
         </select>
@@ -22,7 +23,33 @@
     </label>
     <input type="submit"/>
 </form>
-<p>Result Value: <span th:text="${resultValue}"/></p>
-<p>Calculation Time: <span th:text="${calculationTime}"/> milliseconds</p>
+<p><b>Result Value: </b><span th:text="${resultValue}"/></p>
+<p><b>Calculation Time: </b><span th:text="${calculationTime}"/> milliseconds</p>
+<table>
+    <caption>
+        Conversion requests history
+    </caption>
+    <thead>
+    <tr>
+        <th> Id</th>
+        <th> Source currency</th>
+        <th> Target currency</th>
+        <th> Monetary Value</th>
+        <th> Event Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${conversionRequests.isEmpty()}">
+        <td colspan="5"> No conversion requests yet</td>
+    </tr>
+    <tr th:each="req : ${conversionRequests}">
+        <td><span th:text="${req.id}"> Id </span></td>
+        <td><span th:text="${req.sourceCurrency}"> Source currency </span></td>
+        <td><span th:text="${req.targetCurrency}"> Target currency </span></td>
+        <td><span th:text="${req.monetaryValue}"> Monetary Value </span></td>
+        <td><span th:text="${#temporals.format(req.eventDateTime, 'dd-MM-yyyy HH:mm:ss')}"> Event Time </span></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

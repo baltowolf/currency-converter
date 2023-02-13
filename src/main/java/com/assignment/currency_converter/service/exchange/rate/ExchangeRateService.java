@@ -9,7 +9,7 @@ public interface ExchangeRateService {
     /**
      * Get Exchange Rates
      *
-     * @return Currency code -> Exchange Rate value
+     * @return Currency code -> Exchange Rate value. Result saves in cache
      */
     Map<String, Number> getExchangeRates();
 }

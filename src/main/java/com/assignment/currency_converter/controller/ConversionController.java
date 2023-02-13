@@ -41,7 +41,8 @@ public class ConversionController {
      */
     @GetMapping(path = "/")
     public String index(Model model) {
-        initCurrenciesOptions(model);
+        model.addAttribute("currencies", getCurrencyCodes());
+        model.addAttribute("conversionRequests", conversionHistoryService.findAll());
         return MAIN_PAGE;
     }
 
@@ -75,22 +76,19 @@ public class ConversionController {
         model.addAttribute("resultValue", resultValue);
         model.addAttribute("calculationTime", calculationTime);
         log.info(String.format("CalculationTime in milliseconds: %d", calculationTime));
-        initCurrenciesOptions(model);
-
         conversionHistoryService.saveConversionRequest(sourceCurrency, targetCurrency, monetaryValue);
+
+        model.addAttribute("currencies", getCurrencyCodes());
+        model.addAttribute("conversionRequests", conversionHistoryService.findAll());
         return MAIN_PAGE;
     }
 
     /**
-     * Init Currencies Options for select-fields on the main page
+     * Get list of currency codes
      *
-     * @param model model
+     * @return list of currency codes
      */
-    private void initCurrenciesOptions(Model model) {
-        List<String> currencies =
-                exchangeRateService.getExchangeRates().keySet().stream()
-                        .sorted()
-                        .collect(Collectors.toList());
-        model.addAttribute("currencies", currencies);
+    private List<String> getCurrencyCodes() {
+        return exchangeRateService.getExchangeRates().keySet().stream().sorted().collect(Collectors.toList());
     }
 }
